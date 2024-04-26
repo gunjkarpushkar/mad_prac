@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="service" href="sw.js">
+</head>
+<body>
+    <h1>PWA Project</h1>
+    <p>I am working on PWA Project</p>
+</body>
+<script>
+    // Don't register the service worker
+    // until the page has fully loaded
+    window.addEventListener('load', () => {
+      // Is service worker available?
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(() => {
+          console.log('Service worker registered!');
+        }).catch((error) => {
+          console.warn('Error registering service worker:');
+          console.warn(error);
+        });
+      }
+    });
+  </script>
+</html>
+
+
+<!--
+1] Preapre your frontend files and it should be index.html only
+2] Now go to brower and download any random image for your logo.
+3] Now go to Fevicon website and click on convertor drag and drop the image you have downloaded
+and then download the logos of your image.
+4] Extract it and put only the logos in the folder where your html file is.
+5] Now link the site.webmanifest file.
+6] Now go to the site.webmanifest file, click on right cick and format the document.
+7] Now go to the brower, and inspect the page, go to the application.
+8] Now for the Service Worker part, create new sw.js file and link it with the index.html
+9] Now install.
+-->
+
+<!--
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js', { scope: "/" }).then(function (registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    })
+}
+
+var CACHE_NAME = 'my-site-cache-v1';
+var urlsToCache = [
+'/',
+'index.html',
+/* '/styles/main.css',
+'/script/main.js' */
+];
+self.addEventListener('install', function (event) {
+    // Perform install steps
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function (cache) {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    )
+});
+
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(function(response) {
+          // Cache hit - return response
+          if (response) {
+            return response;
+          }
+          return fetch(event.request);
+        }
+      )
+    );
+  });
+-->
+
+
+
+<!--
+{
+    "name": "hello",
+    "short_name": "hel",
+    "start_url" : "/",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}    
+-->
+
+<!--
+1] Now open the Github, and upload those html, webmanifest, site.js files on the Github repo.
+2]Now got to settings of the Repo and then pages.
+3] Before going to the Github actiions, choose the main branch and save it.
+4] Again go to the GitHub actions, and look for the link to your website.
+5] If this doesnt work enter the custom domain in the input.    
+-->
